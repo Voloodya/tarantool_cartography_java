@@ -1,0 +1,133 @@
+openapi: 3.0.3
+# Конфигурация генерации моделей для запросов и ответов "models"
+info:
+  title: Cartrography example API
+  description: Cartrography example API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+tags:
+  - name: pin
+    description: Operations with geo pins
+paths:
+  /new: #Путь (метод)
+    post:
+      tags:
+        - pin
+      summary: Create new Pin
+      operationId: createPin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createNewPinRequest'
+      responses:
+        200:
+          description: Pin was created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createNewPinResponse'
+
+  /remove: #Путь (метод)
+    post:
+      tags:
+        - pin
+      summary: Delete Pin
+      operationId: deletePin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeoObject'
+      responses:
+        200:
+          description: Pin was deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deletePinResponse'
+
+  /list: #Путь (метод)
+    get:
+      tags:
+        - pin
+      summary: Get list of pins in selected region
+      operationId: getPinsList
+      parameters:
+        - in: path
+          name: rect
+          required: true
+          schema:
+            $ref: array
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pinListRequest'
+      responses:
+        200:
+          description: List of pins
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pinListResponse'
+
+components:
+  schemas:
+    GeoObject:
+      type: object
+      required:
+        - id
+        - coordinates
+        - comment
+      properties:
+        id:
+          type: string
+        coordinates:
+          type: array
+          items:
+            type: number
+            format: double
+        comment:
+          type: string
+
+    createNewPinRequest:
+      type: object
+      required:
+        - coordinates
+        - comment
+      properties:
+        coordinates:
+          type: array
+          items:
+            type: number
+            format: double
+        comment:
+          type: string
+
+    createNewPinResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/GeoObject'
+
+    deletePinResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/GeoObject'
+
+    pinListRequest:
+      type: object
+      required:
+        - rect
+      properties:
+        rect: string
+
+    pinListResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/GeoObject'
