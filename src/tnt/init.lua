@@ -5,3 +5,5 @@ box.schema.user.create('storage', {password='passw0rd', if_not_exists=true})
 box.schema.user.grant('storage', 'super', nil, nil, {if_not_exists=true})
 -- Конфигурирование модуля 'msgpack'
 require('msgpack').cfg{encode_invalid_as_nil = true}
+-- fiber
+fiber = require('fiber')
