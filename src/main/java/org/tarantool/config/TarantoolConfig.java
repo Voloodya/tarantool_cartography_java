@@ -81,64 +81,64 @@ public class TarantoolConfig {
                 ).build());
 
         // Конфигурация Tarantool
-
-        try {
+        // Перенесено в файл init.lua
+        //try {
 
             // Создаём спейс (space)
 
-            Map<String, Object> options = new HashMap<>();
-            options.put("if_not_exists", true);
+            //Map<String, Object> options = new HashMap<>();
+            //options.put("if_not_exists", true);
             //Call method create. client.call() возвращает future (обещание создать, когда дойдет до этого время), method get() return result right now
-            client.call("box.schema.create_space", "geo", options).get();
+           //client.call("box.schema.create_space", "geo", options).get();
 
-            List<Map<String, String>> formatOptions = new ArrayList<>();
+            //List<Map<String, String>> formatOptions = new ArrayList<>();
             // Передача списка опций (полей (3))
-            for(int i = 0; i < 3; i++) {
-                Map<String, String> field = new HashMap<>();
+            //for(int i = 0; i < 3; i++) {
+                //Map<String, String> field = new HashMap<>();
 
-                switch (i) {
-                    case 0:
-                        field.put("name", "id");
-                        field.put("type", "string");
-                        break;
-                    case 1:
-                        field.put("name", "coordinates");
-                        field.put("type", "array");
-                        break;
-                    case 2:
-                        field.put("name", "comment");
-                        field.put("type", "string");
-                        break;
-                }
-                formatOptions.add(field);
-            }
+                //switch (i) {
+                    //case 0:
+                       // field.put("name", "id");
+                       // field.put("type", "string");
+                       // break;
+                    //case 1:
+                        //field.put("name", "coordinates");
+                        //field.put("type", "array");
+                        //break;
+                    //case 2:
+                        //field.put("name", "comment");
+                        //field.put("type", "string");
+                        //break;
+                //}
+                //formatOptions.add(field);
+           // }
 
             // Создаем формат спейса через tupl
 
-            TarantoolTuple format = tupleFactory.create(formatOptions);
-            client.call("box.space.geo:format", format).get();
+            //TarantoolTuple format = tupleFactory.create(formatOptions);
+            //client.call("box.space.geo:format", format).get();
 
             // Создание первичного индекса
 
-            List<String> parts = new ArrayList<>();
-            parts.add("id");
-            options.put("parts", parts);
-            client.call("box.space.geo:create_index", "primary", options).get();
+            //List<String> parts = new ArrayList<>();
+            //parts.add("id");
+            //options.put("parts", parts);
+            //client.call("box.space.geo:create_index", "primary", options).get();
 
             // Создание вторичного индекса
 
-            options.remove("parts");
-            parts.remove(0);
-            parts.add("coordinates");
-            options.put("parts", parts);
+            //options.remove("parts");
+            //parts.remove(0);
+            //parts.add("coordinates");
+            //options.put("parts", parts);
             // Для ГЕО операции используется индекс RTREE
-            options.put("type", "RTREE");
-            options.put("unique", false);
-            client.call("box.space.geo:create_index", "geoidx", options).get();
-        }
-        catch(InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+            //options.put("type", "RTREE");
+            //options.put("unique", false);
+            //client.call("box.space.geo:create_index", "geoidx", options).get();
+        //}
+        //catch(InterruptedException | ExecutionException e) {
+           // e.printStackTrace();
+       // }
 
         return client;
     }
